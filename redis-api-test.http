@@ -1,0 +1,75 @@
+### Redis API Test Requests
+# 이 파일은 GitHub Copilot을 사용하여 생성되었습니다.
+# 이 파일은 IntelliJ IDEA HTTP Client를 사용하여 Redis API를 테스트합니다.
+
+# Base URL 변수 (로컬 스프링 부트 서버)
+@baseUrl = http://localhost:18091
+
+### Health Check
+# 서버 상태 확인용 헬스체크 엔드포인트 (GET)
+GET {{baseUrl}}/api/redis/health
+Accept: application/json
+
+###
+### Set key (no TTL)
+# 키-값 저장 (TTL 없이 POST 본문에 key, value 전달)
+POST {{baseUrl}}/api/redis/set
+Content-Type: application/json
+
+{
+  "key": "test:key1",
+  "value": "Hello Redis"
+}
+
+###
+### Set key with TTL (query param)
+# 키-값 저장 (쿼리 파라미터 ttl로 만료시간 설정)
+POST {{baseUrl}}/api/redis/set?ttl=10
+Content-Type: application/json
+
+{
+  "key": "test:temp",
+  "value": "This will expire in 10 seconds"
+}
+
+###
+### Get value
+# 특정 키 조회 (GET)
+GET {{baseUrl}}/api/redis/get/test:key1
+Accept: application/json
+
+###
+### Exists
+# 키 존재 여부 확인 (GET)
+GET {{baseUrl}}/api/redis/exists/test:key1
+Accept: application/json
+
+###
+### Keys by pattern
+# 패턴으로 키 목록 조회 (GET), 예: test:*
+GET {{baseUrl}}/api/redis/keys?pattern=test:*
+Accept: application/json
+
+###
+### Hash - set field
+# 해시(hash) 키의 필드에 값 설정 (POST)
+POST {{baseUrl}}/api/redis/hash/set
+Content-Type: application/json
+
+{
+  "hashKey": "user:1",
+  "field": "name",
+  "value": "John Doe"
+}
+
+###
+### Hash - get field
+# 해시 필드 조회 (GET)
+GET {{baseUrl}}/api/redis/hash/get/user:1/name
+Accept: application/json
+
+###
+### Delete key
+# 키 삭제 (DELETE)
+DELETE {{baseUrl}}/api/redis/delete/test:key1
+Accept: application/json

@@ -1,0 +1,8 @@
+# Project exclude paths
+/.gradle/
+/build/
+/build/classes/java/main/
+/build/classes/java/test/
+/jdk-17.0.2/
+/.idea/
+/openjdk-17.zip
